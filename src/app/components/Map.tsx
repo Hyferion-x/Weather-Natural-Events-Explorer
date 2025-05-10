@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { getNaturalEvents } from '../services/api';
+import { NaturalEvent } from '../types';
 
 interface MapProps {
   center?: [number, number];
@@ -19,7 +20,7 @@ const Map = ({
   const mapRef = useRef<HTMLDivElement>(null);
   const leafletMap = useRef<L.Map | null>(null);
   const [loading, setLoading] = useState(true);
-  const [events, setEvents] = useState<any[]>([]);
+  const [events, setEvents] = useState<NaturalEvent[]>([]);
 
   useEffect(() => {
     // Initialize map

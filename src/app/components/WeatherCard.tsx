@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { FaTemperatureLow, FaTemperatureHigh, FaWind, FaTint, FaSun, FaMoon } from 'react-icons/fa';
+import { WeatherData, ForecastData } from '../types';
 
 // Helper for Open-Meteo weathercode
 const weatherCodeMap: Record<number, { desc: string; icon: string }> = {
@@ -36,9 +37,9 @@ const weatherCodeMap: Record<number, { desc: string; icon: string }> = {
 };
 
 interface WeatherCardProps {
-  weatherData: any;
-  forecastData?: any | null;
-  yesterdayData?: any | null;
+  weatherData: WeatherData | null;
+  forecastData?: ForecastData | null;
+  yesterdayData?: ForecastData | null;
   loading: boolean;
   locationName?: string;
 }

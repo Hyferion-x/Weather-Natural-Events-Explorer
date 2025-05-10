@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { getLocationFromSearch } from '../services/api';
+import { LocationSearchResult } from '../types';
 
 interface SearchBoxProps {
   onLocationSelect: (lat: number, lng: number, locationName: string) => void;
@@ -9,7 +10,7 @@ interface SearchBoxProps {
 
 const SearchBox: React.FC<SearchBoxProps> = ({ onLocationSelect }) => {
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [searchResults, setSearchResults] = useState<LocationSearchResult[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [showResults, setShowResults] = useState(false);
   const searchBoxRef = useRef<HTMLDivElement>(null);
@@ -51,7 +52,7 @@ const SearchBox: React.FC<SearchBoxProps> = ({ onLocationSelect }) => {
     }
   };
 
-  const handleResultClick = (result: any) => {
+  const handleResultClick = (result: LocationSearchResult) => {
     const lat = parseFloat(result.lat);
     const lon = parseFloat(result.lon);
     const name = result.display_name;

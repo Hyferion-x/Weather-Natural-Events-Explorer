@@ -2,13 +2,14 @@
 
 import React, { useEffect, useState } from 'react';
 import { getNaturalEvents } from '../services/api';
+import { NaturalEvent, EventCategory } from '../types';
 
 interface NaturalEventsProps {
   onEventSelect?: (lat: number, lng: number, title: string) => void;
 }
 
 const NaturalEvents: React.FC<NaturalEventsProps> = ({ onEventSelect }) => {
-  const [events, setEvents] = useState<any[]>([]);
+  const [events, setEvents] = useState<NaturalEvent[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [filter, setFilter] = useState('all');
@@ -31,7 +32,7 @@ const NaturalEvents: React.FC<NaturalEventsProps> = ({ onEventSelect }) => {
     fetchEvents();
   }, []);
 
-  const handleEventClick = (event: any) => {
+  const handleEventClick = (event: NaturalEvent) => {
     if (onEventSelect && event.geometry && event.geometry.length > 0) {
       const geometry = event.geometry[0];
       if (geometry.coordinates && geometry.coordinates.length >= 2) {
@@ -44,13 +45,13 @@ const NaturalEvents: React.FC<NaturalEventsProps> = ({ onEventSelect }) => {
   const filteredEvents = filter === 'all' 
     ? events 
     : events.filter(event => 
-        event.categories.some((category: any) => 
+        event.categories.some((category: EventCategory) => 
           category.id.toLowerCase() === filter.toLowerCase()
         )
       );
   
   const categories = Array.from(new Set(
-    events.flatMap(event => event.categories.map((cat: any) => cat.id))
+    events.flatMap(event => event.categories.map((cat: EventCategory) => cat.id))
   ));
 
   if (loading) {
@@ -104,7 +105,7 @@ const NaturalEvents: React.FC<NaturalEventsProps> = ({ onEventSelect }) => {
               >
                 <h3 className="font-medium text-white">{event.title}</h3>
                 <div className="text-sm text-gray-300 flex flex-wrap gap-1 mt-1">
-                  {event.categories.map((category: any) => (
+                  {event.categories.map((category: EventCategory) => (
                     <span 
                       key={`${event.id}-${category.id}`}
                       className="inline-block bg-blue-900 text-blue-200 px-2 py-0.5 rounded text-xs"
