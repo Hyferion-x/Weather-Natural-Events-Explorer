@@ -15,7 +15,6 @@ interface NavbarProps {
 const FuturisticNavbar: React.FC<NavbarProps> = ({ onUseMyLocation, onEventSelect }) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [currentTime, setCurrentTime] = useState(new Date());
   
   // Modal states
   const [aboutModalOpen, setAboutModalOpen] = useState(false);
@@ -34,12 +33,6 @@ const FuturisticNavbar: React.FC<NavbarProps> = ({ onUseMyLocation, onEventSelec
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [scrolled]);
-
-  // Update time
-  useEffect(() => {
-    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
-    return () => clearInterval(timer);
-  }, []);
 
   // Handle button clicks
   const handleAboutClick = () => {

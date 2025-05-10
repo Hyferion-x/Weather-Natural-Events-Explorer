@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Modal from './Modal';
-import { FaExclamationTriangle, FaExclamationCircle, FaBolt, FaWind, FaThermometerFull, FaSnowflake, FaCloudRain } from 'react-icons/fa';
+import { FaExclamationCircle, FaBolt, FaWind, FaThermometerFull, FaSnowflake, FaCloudRain } from 'react-icons/fa';
 
 interface WeatherAlertsModalProps {
   isOpen: boolean;
@@ -84,11 +84,6 @@ const WeatherAlertsModal: React.FC<WeatherAlertsModalProps> = ({ isOpen, onClose
     <Modal isOpen={isOpen} onClose={onClose} title="Weather Alerts">
       <div>
         <div className="mb-4">
-          <p className="flex items-center mb-4 bg-blue-900/20 p-3 rounded border border-blue-900/30">
-            <FaExclamationCircle className="text-blue-400 mr-2" />
-            <span className="text-sm">This is a demo feature showcasing potential weather alerts functionality.</span>
-          </p>
-          
           <div className="flex space-x-2 mb-4 overflow-x-auto pb-2">
             <button 
               onClick={() => setFilter('all')} 

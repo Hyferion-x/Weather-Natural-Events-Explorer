@@ -7,9 +7,8 @@ import WeatherCard from './components/WeatherCard';
 import NaturalEvents from './components/NaturalEvents';
 import { getWeatherData, getForecastWeather, getHistoricalWeather, reverseGeocode } from './services/api';
 import WeatherBackground from './components/WeatherBackground';
-import WorldClock from './components/WorldClock';
 import FuturisticNavbar from './components/FuturisticNavbar';
-import { WeatherData, ForecastData, ReverseGeocodeResult } from './types';
+import { WeatherData, ForecastData } from './types';
 
 // Import Map component dynamically to avoid SSR issues with Leaflet
 const Map = dynamic(() => import('./components/Map'), {
@@ -53,7 +52,7 @@ export default function Home() {
         try {
           const yesterday = await getHistoricalWeather(selectedLocation.lat, selectedLocation.lng, yesterdayDate);
           setYesterdayData(yesterday);
-        } catch (_err) {
+        } catch {
           setHistoricalError('Failed to fetch historical weather.');
           setYesterdayData(null);
         }
@@ -126,7 +125,7 @@ export default function Home() {
           }
           setLoading(false);
         },
-        (geoError) => {
+        () => {
           setError('Unable to get your location.');
           setLoading(false);
         }

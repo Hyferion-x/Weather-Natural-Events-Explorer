@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 import Modal from './Modal';
 import { getNaturalEvents } from '../services/api';
-import { NaturalEvent, EventCategory } from '../types';
+import { NaturalEvent } from '../types';
 import { FaExclamationTriangle, FaInfoCircle, FaFilter } from 'react-icons/fa';
 
 interface GlobalEventsModalProps {
@@ -153,7 +153,7 @@ const GlobalEventsModal: React.FC<GlobalEventsModalProps> = ({
                 </h3>
                 <div className="space-y-2">
                   {Object.entries(categoryStats)
-                    .sort(([_, countA], [__, countB]) => countB - countA)
+                    .sort(([, countA], [, countB]) => countB - countA)
                     .map(([category, count]) => (
                       <div key={category} className="flex items-center">
                         <div className="text-sm text-gray-300 flex-1">{category}</div>
