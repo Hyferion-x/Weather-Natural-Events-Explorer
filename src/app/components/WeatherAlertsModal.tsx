@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import Modal from './Modal';
-import { FaExclamationCircle, FaBolt, FaWind, FaThermometerFull, FaSnowflake, FaCloudRain } from 'react-icons/fa';
+import { FaBolt, FaWind, FaThermometerFull, FaSnowflake, FaCloudRain } from 'react-icons/fa';
 
 interface WeatherAlertsModalProps {
   isOpen: boolean;
