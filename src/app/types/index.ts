@@ -218,6 +218,9 @@ export interface ReverseGeocodeResult {
 
 // Enhanced Geocoding with additional details
 export interface EnhancedGeocodeResult extends ReverseGeocodeResult {
+  class?: string;
+  type?: string;
+  importance?: number;
   address: {
     house_number?: string;
     road?: string;

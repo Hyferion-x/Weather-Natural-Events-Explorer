@@ -73,11 +73,11 @@ const EnhancedGeocodingModal: React.FC<EnhancedGeocodingModalProps> = ({
             </div>
             <div>
               <div className="text-sm text-gray-300">Location Type</div>
-              <div className="text-white font-semibold">{getLocationType(geocodeData.osm_type, geocodeData.type)}</div>
+              <div className="text-white font-semibold">{getLocationType(geocodeData.osm_type, geocodeData.type || 'unknown')}</div>
             </div>
             <div>
               <div className="text-sm text-gray-300">Importance Score</div>
-              <div className="text-white font-semibold">{(geocodeData.importance * 100).toFixed(1)}%</div>
+              <div className="text-white font-semibold">{geocodeData.importance ? (geocodeData.importance * 100).toFixed(1) + '%' : 'N/A'}</div>
             </div>
           </div>
         </div>
@@ -161,11 +161,11 @@ const EnhancedGeocodingModal: React.FC<EnhancedGeocodingModalProps> = ({
             </div>
             <div>
               <div className="text-gray-300">Class</div>
-              <div className="text-white font-semibold">{geocodeData.class}</div>
+              <div className="text-white font-semibold">{geocodeData.class || 'N/A'}</div>
             </div>
             <div>
               <div className="text-gray-300">Type</div>
-              <div className="text-white font-semibold">{geocodeData.type}</div>
+              <div className="text-white font-semibold">{geocodeData.type || 'N/A'}</div>
             </div>
             <div>
               <div className="text-gray-300">Country Code</div>
