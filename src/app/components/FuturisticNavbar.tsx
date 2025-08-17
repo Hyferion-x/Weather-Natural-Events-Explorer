@@ -7,12 +7,16 @@ import AboutModal from './AboutModal';
 import GlobalEventsModal from './GlobalEventsModal';
 import WeatherAlertsModal from './WeatherAlertsModal';
 
+
 interface NavbarProps {
   onUseMyLocation: () => void;
   onEventSelect?: (lat: number, lng: number, title: string) => void;
 }
 
-const FuturisticNavbar: React.FC<NavbarProps> = ({ onUseMyLocation, onEventSelect }) => {
+const FuturisticNavbar: React.FC<NavbarProps> = ({ 
+  onUseMyLocation, 
+  onEventSelect
+}) => {
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
@@ -50,6 +54,8 @@ const FuturisticNavbar: React.FC<NavbarProps> = ({ onUseMyLocation, onEventSelec
     setMobileMenuOpen(false);
   };
 
+
+
   return (
     <>
       {/* Add scan lines overlay for cyberpunk effect */}
@@ -71,8 +77,8 @@ const FuturisticNavbar: React.FC<NavbarProps> = ({ onUseMyLocation, onEventSelec
             </div>
             
             {/* Desktop navigation */}
-            <div className="hidden md:block">
-              <div className="ml-10 flex items-center space-x-4">
+            <div className="hidden lg:block">
+              <div className="ml-10 flex items-center space-x-2">
                 <button 
                   className="text-gray-200 hover:text-white hover:bg-blue-800/30 px-3 py-2 rounded-md text-sm font-medium flex items-center transition nav-button-hover"
                   onClick={onUseMyLocation}
@@ -112,7 +118,7 @@ const FuturisticNavbar: React.FC<NavbarProps> = ({ onUseMyLocation, onEventSelec
             </div>
             
             {/* Mobile menu button */}
-            <div className="md:hidden flex items-center">
+            <div className="lg:hidden flex items-center">
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="inline-flex items-center justify-center p-2 rounded-md text-gray-200 hover:text-white hover:bg-blue-800/30 focus:outline-none"
@@ -128,8 +134,8 @@ const FuturisticNavbar: React.FC<NavbarProps> = ({ onUseMyLocation, onEventSelec
         </div>
 
         {/* Mobile menu */}
-        <div className={`md:hidden ${mobileMenuOpen ? 'block' : 'hidden'}`}>
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-black/80 backdrop-blur-lg">
+        <div className={`lg:hidden ${mobileMenuOpen ? 'block' : 'hidden'}`}>
+          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-black/80 backdrop-blur-lg max-h-96 overflow-y-auto">
             <button
               className="text-gray-200 hover:text-white block px-3 py-2 rounded-md text-base font-medium w-full text-left hover:bg-blue-800/30 nav-button-hover"
               onClick={() => {
@@ -154,6 +160,7 @@ const FuturisticNavbar: React.FC<NavbarProps> = ({ onUseMyLocation, onEventSelec
               <FaBolt className="inline mr-2 text-glow" />
               Weather Alerts
             </button>
+
             <button
               className="text-gray-200 hover:text-white block px-3 py-2 rounded-md text-base font-medium w-full text-left hover:bg-blue-800/30 nav-button-hover"
               onClick={handleAboutClick}
@@ -184,6 +191,8 @@ const FuturisticNavbar: React.FC<NavbarProps> = ({ onUseMyLocation, onEventSelec
         isOpen={weatherAlertsModalOpen} 
         onClose={() => setWeatherAlertsModalOpen(false)} 
       />
+
+
     </>
   );
 };

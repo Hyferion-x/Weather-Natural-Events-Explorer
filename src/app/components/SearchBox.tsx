@@ -63,18 +63,18 @@ const SearchBox: React.FC<SearchBoxProps> = ({ onLocationSelect }) => {
   };
 
   return (
-    <div ref={searchBoxRef} className="relative w-full max-w-md glass-card">
-      <div className="flex items-center">
+    <div ref={searchBoxRef} className="relative w-full max-w-md">
+      <div className="flex items-center gap-2">
         <input
           type="text"
           placeholder="Search for a location..."
-          className="w-full px-4 py-2 bg-[#232946] text-white border border-white/10 rounded-l-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 px-4 py-3 bg-[#232946] text-white border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyPress={handleKeyPress}
         />
         <button
-          className="glass-btn"
+          className="px-6 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-medium rounded-lg border border-blue-500/30 shadow-lg hover:shadow-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:ring-offset-[#232946]"
           onClick={handleSearch}
         >
           {isLoading ? (
