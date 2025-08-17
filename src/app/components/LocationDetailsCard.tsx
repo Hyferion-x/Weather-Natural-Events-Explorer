@@ -38,7 +38,7 @@ const LocationDetailsCard: React.FC<LocationDetailsCardProps> = ({ geocodeData, 
 
   const { display_name, lat, lon, address, boundingbox } = geocodeData;
 
-  const formatAddress = (address: any) => {
+  const formatAddress = (address: EnhancedGeocodeResult['address']) => {
     const parts = [];
     if (address.house_number) parts.push(address.house_number);
     if (address.road) parts.push(address.road);

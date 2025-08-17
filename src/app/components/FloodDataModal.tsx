@@ -183,7 +183,7 @@ const FloodDataModal: React.FC<FloodDataModalProps> = ({
             </ul>
             <div className="mt-3 p-2 bg-black/20 rounded">
               <p className="text-yellow-400 font-semibold">⚠️ Remember:</p>
-              <p className="text-xs">Turn around, don't drown! Never walk or drive through floodwaters.</p>
+              <p className="text-xs">Turn around, don&apos;t drown! Never walk or drive through floodwaters.</p>
             </div>
           </div>
         </div>
