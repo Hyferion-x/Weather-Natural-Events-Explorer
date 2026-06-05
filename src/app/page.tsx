@@ -238,8 +238,8 @@ export default function Home() {
             </div>
           </div>
 
-          {/* Desktop: three columns + bottom row */}
-          <div className="hidden lg:grid lg:grid-cols-12 gap-6">
+          {/* Desktop: three columns with lower cards placed below the map */}
+          <div className="hidden lg:grid lg:grid-cols-12 gap-6 items-start">
             {/* LEFT of map */}
             <div className="col-span-3 flex flex-col gap-4">
               <LocationDetailsCard geocodeData={geocodeData} loading={loading} />
@@ -258,35 +258,35 @@ export default function Home() {
             </div>
 
             {/* RIGHT of map */}
-            <div className="col-span-3 flex flex-col gap-4">
+            <div className="col-span-3 row-span-2 flex flex-col gap-4">
               <SatelliteRadiationCard radiationData={radiationData} loading={loading} />
               <AirQualityCard airQualityData={airQualityData} loading={loading} />
               <MarineWeatherCard marineData={marineData} loading={loading} />
             </div>
 
-                         {/* UNDER THE MAP: Weather (smaller) + Natural Events (wider) */}
-             <div className="col-span-12 grid grid-cols-12 gap-6 mt-0">
-                               {/* Weather (left - smaller) */}
-                <div className="col-span-12 xl:col-span-4">
-                  <div className="h-full min-h-[700px] [&>div]:w-full [&>div]:max-w-none [&>div]:mx-0 [&>div]:mb-0">
-                    <WeatherCard
-                      weatherData={weatherData}
-                      forecastData={forecastData}
-                      yesterdayData={yesterdayData}
-                      loading={loading}
-                      locationName={selectedLocation?.name}
-                    />
-                    {historicalError && <div className="text-xs text-red-400 mt-2">{historicalError}</div>}
-                  </div>
+            {/* UNDER THE MAP: Weather (smaller) + Natural Events (wider) */}
+            <div className="col-span-9 grid grid-cols-1 xl:grid-cols-12 gap-6">
+              {/* Weather (left - smaller) */}
+              <div className="xl:col-span-5">
+                <div className="[&>div]:w-full [&>div]:max-w-none [&>div]:mx-0 [&>div]:mb-0">
+                  <WeatherCard
+                    weatherData={weatherData}
+                    forecastData={forecastData}
+                    yesterdayData={yesterdayData}
+                    loading={loading}
+                    locationName={selectedLocation?.name}
+                  />
+                  {historicalError && <div className="text-xs text-red-400 mt-2">{historicalError}</div>}
                 </div>
+              </div>
 
-                {/* Natural Events (right - wider) */}
-                <div className="col-span-12 xl:col-span-8">
-                  <div className="h-full min-h-[700px] [&>div]:w-full [&>div]:max-w-none [&>div]:mx-0 [&>div]:mb-0">
-                    <NaturalEvents onEventSelect={handleEventSelect} />
-                  </div>
+              {/* Natural Events (right - wider) */}
+              <div className="xl:col-span-7">
+                <div className="[&>div]:w-full [&>div]:max-w-none [&>div]:mx-0 [&>div]:mb-0">
+                  <NaturalEvents onEventSelect={handleEventSelect} />
                 </div>
-             </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -300,7 +300,7 @@ export default function Home() {
           Built with <span className="font-semibold text-blue-300">Next.js</span>, <span className="font-semibold text-blue-300">Tailwind CSS</span>, <span className="font-semibold text-blue-300">Leaflet</span>, and <span className="font-semibold text-blue-300">React</span>.
         </div>
         <div className="mt-2">
-          &copy; {new Date().getFullYear()} <span className="font-bold text-white">Zesky</span>
+          &copy; {new Date().getFullYear()} <span className="font-bold text-white">Udantha Weliwatta</span>
         </div>
       </footer>
     </main>
