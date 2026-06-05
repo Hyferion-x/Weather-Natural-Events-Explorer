@@ -56,7 +56,7 @@ const NaturalEvents: React.FC<NaturalEventsProps> = ({ onEventSelect }) => {
 
   if (loading) {
     return (
-      <div className="glass-card">
+      <div className="glass-card !max-w-none">
         <div className="animate-pulse">
           <div className="h-7 bg-white/10 rounded w-1/2 mb-4"></div>
           <div className="h-5 bg-white/10 rounded w-full mb-2"></div>
@@ -70,14 +70,14 @@ const NaturalEvents: React.FC<NaturalEventsProps> = ({ onEventSelect }) => {
 
   if (error) {
     return (
-      <div className="glass-card">
+      <div className="glass-card !max-w-none">
         <p className="text-red-400">{error}</p>
       </div>
     );
   }
 
   return (
-    <div className="glass-card">
+    <div className="glass-card !max-w-none">
       <h2 className="text-xl font-bold mb-4 text-white">Natural Events (NASA EONET)</h2>
       <div className="mb-4">
         <label className="block text-sm font-medium text-gray-300 mb-1">Filter by type:</label>
@@ -126,4 +126,4 @@ const NaturalEvents: React.FC<NaturalEventsProps> = ({ onEventSelect }) => {
   );
 };
 
-export default NaturalEvents; 
+export default NaturalEvents;
