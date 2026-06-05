@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import dynamic from 'next/dynamic';
 import SearchBox from './components/SearchBox';
 import WeatherCard from './components/WeatherCard';
@@ -65,6 +65,41 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [historicalError, setHistoricalError] = useState<string | null>(null);
+
+  const loadUserLocation = useCallback(() => {
+    if (!navigator.geolocation) {
+      setError('Geolocation is not supported by your browser.');
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const { latitude, longitude } = position.coords;
+        try {
+          const geo = await reverseGeocode(latitude, longitude);
+          setSelectedLocation({ lat: latitude, lng: longitude, name: geo?.display_name || 'Your Location' });
+        } catch {
+          setSelectedLocation({ lat: latitude, lng: longitude, name: 'Your Location' });
+        }
+      },
+      () => {
+        setError('Unable to get your location.');
+        setLoading(false);
+      },
+      {
+        enableHighAccuracy: false,
+        timeout: 10000,
+        maximumAge: 5 * 60 * 1000,
+      }
+    );
+  }, []);
+
+  useEffect(() => {
+    loadUserLocation();
+  }, [loadUserLocation]);
 
   useEffect(() => {
     const fetchAllWeatherData = async () => {
@@ -153,37 +188,13 @@ export default function Home() {
     setSelectedLocation({ lat, lng, name: title });
   };
 
-  const handleUseMyLocation = () => {
-    if (navigator.geolocation) {
-      setLoading(true);
-      navigator.geolocation.getCurrentPosition(
-        async (position) => {
-          const { latitude, longitude } = position.coords;
-          try {
-            const geo = await reverseGeocode(latitude, longitude);
-            setSelectedLocation({ lat: latitude, lng: longitude, name: geo?.display_name || 'Your Location' });
-          } catch {
-            setSelectedLocation({ lat: latitude, lng: longitude, name: 'Your Location' });
-          }
-          setLoading(false);
-        },
-        () => {
-          setError('Unable to get your location.');
-          setLoading(false);
-        }
-      );
-    } else {
-      setError('Geolocation is not supported by your browser.');
-    }
-  };
-
   return (
     <main className="min-h-screen w-full flex flex-col bg-[#10131a] bg-gradient-to-br from-[#10131a] to-[#232946] p-0 relative overflow-x-hidden">
       <WeatherBackground weathercode={weatherData?.current_weather?.weathercode} />
 
       {/* Navbar */}
       <FuturisticNavbar 
-        onUseMyLocation={handleUseMyLocation} 
+        onUseMyLocation={loadUserLocation}
         onEventSelect={handleEventSelect}
       />
 
@@ -265,10 +276,10 @@ export default function Home() {
             </div>
 
             {/* UNDER THE MAP: Weather (smaller) + Natural Events (wider) */}
-            <div className="col-span-9 grid grid-cols-1 xl:grid-cols-12 gap-6">
+            <div className="col-span-9 grid grid-cols-1 xl:grid-cols-12 gap-6 items-stretch">
               {/* Weather (left - smaller) */}
-              <div className="xl:col-span-5">
-                <div className="[&>div]:w-full [&>div]:max-w-none [&>div]:mx-0 [&>div]:mb-0">
+              <div className="xl:col-span-5 h-full">
+                <div className="h-full [&_.glass-card]:h-full [&_.glass-card]:w-full [&_.glass-card]:max-w-none [&_.glass-card]:mx-0 [&_.glass-card]:mb-0">
                   <WeatherCard
                     weatherData={weatherData}
                     forecastData={forecastData}
@@ -281,8 +292,8 @@ export default function Home() {
               </div>
 
               {/* Natural Events (right - wider) */}
-              <div className="xl:col-span-7">
-                <div className="[&>div]:w-full [&>div]:max-w-none [&>div]:mx-0 [&>div]:mb-0">
+              <div className="xl:col-span-7 h-full">
+                <div className="h-full [&_.glass-card]:h-full [&_.glass-card]:w-full [&_.glass-card]:max-w-none [&_.glass-card]:mx-0 [&_.glass-card]:mb-0">
                   <NaturalEvents onEventSelect={handleEventSelect} />
                 </div>
               </div>
