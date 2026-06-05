@@ -14,9 +14,10 @@ interface WorldClockProps {
 }
 
 const WorldClock: React.FC<WorldClockProps> = ({ small }) => {
-  const [time, setTime] = useState(getTimeStrings());
+  const [time, setTime] = useState({ utc: '--:--:--', local: '--:--:--' });
 
   useEffect(() => {
+    setTime(getTimeStrings());
     const interval = setInterval(() => setTime(getTimeStrings()), 1000);
     return () => clearInterval(interval);
   }, []);
@@ -29,4 +30,4 @@ const WorldClock: React.FC<WorldClockProps> = ({ small }) => {
   );
 };
 
-export default WorldClock; 
+export default WorldClock;

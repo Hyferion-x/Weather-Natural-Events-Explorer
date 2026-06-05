@@ -8,14 +8,12 @@ const nasaEonetApi = axios.create({
 // OpenStreetMap Nominatim API for geocoding
 const nominatimApi = axios.create({
   baseURL: 'https://nominatim.openstreetmap.org',
-  headers: {
-    'Content-Type': 'application/json',
-    'User-Agent': 'WeatherApp/1.0',
-  },
 });
 
 // Open-Meteo API base URL
 const openMeteoBase = 'https://api.open-meteo.com/v1/forecast';
+const openMeteoMarineBase = 'https://marine-api.open-meteo.com/v1/marine';
+const openMeteoAirQualityBase = 'https://air-quality-api.open-meteo.com/v1/air-quality';
 
 export const getNaturalEvents = async () => {
   try {
@@ -86,7 +84,7 @@ export const getHistoricalWeather = async (lat: number, lon: number, date: strin
 // Get Marine Weather from Open-Meteo
 export const getMarineWeather = async (lat: number, lon: number) => {
   try {
-    const url = `${openMeteoBase}?latitude=${lat}&longitude=${lon}&current=wave_height,wave_direction,wave_period,wind_wave_height,wind_wave_direction,wind_wave_period,swell_wave_height,swell_wave_direction,swell_wave_period&hourly=wave_height,wave_direction,wave_period&timezone=auto`;
+    const url = `${openMeteoMarineBase}?latitude=${lat}&longitude=${lon}&current=wave_height,wave_direction,wave_period,wind_wave_height,wind_wave_direction,wind_wave_period,swell_wave_height,swell_wave_direction,swell_wave_period&hourly=wave_height,wave_direction,wave_period&timezone=auto`;
     const response = await axios.get(url);
     return response.data;
   } catch (error) {
@@ -98,7 +96,22 @@ export const getMarineWeather = async (lat: number, lon: number) => {
 // Get Air Quality from Open-Meteo
 export const getAirQuality = async (lat: number, lon: number) => {
   try {
-    const url = `${openMeteoBase}?latitude=${lat}&longitude=${lon}&current=european_aqi,us_aqi&hourly=european_aqi,us_aqi&timezone=auto`;
+    const current = [
+      'european_aqi',
+      'european_aqi_pm2_5',
+      'european_aqi_pm10',
+      'european_aqi_no2',
+      'european_aqi_o3',
+      'european_aqi_so2',
+      'us_aqi',
+      'us_aqi_pm2_5',
+      'us_aqi_pm10',
+      'us_aqi_no2',
+      'us_aqi_o3',
+      'us_aqi_so2',
+      'us_aqi_co',
+    ].join(',');
+    const url = `${openMeteoAirQualityBase}?latitude=${lat}&longitude=${lon}&current=${current}&hourly=european_aqi,us_aqi&timezone=auto`;
     const response = await axios.get(url);
     return response.data;
   } catch (error) {
@@ -209,4 +222,4 @@ export const getComprehensiveWeatherData = async (lat: number, lon: number) => {
     console.error('Error fetching comprehensive weather data:', error);
     throw error;
   }
-}; 
+};

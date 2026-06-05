@@ -1,4 +1,5 @@
 // Weather API types
+export type NullableNumber = number | null;
 export interface CurrentWeather {
   temperature: number;
   windspeed: number;
@@ -56,21 +57,21 @@ export interface MarineWeather {
   elevation: number;
   current: {
     time: string;
-    wave_height: number;
-    wave_direction: number;
-    wave_period: number;
-    wind_wave_height: number;
-    wind_wave_direction: number;
-    wind_wave_period: number;
-    swell_wave_height: number;
-    swell_wave_direction: number;
-    swell_wave_period: number;
+    wave_height: NullableNumber;
+    wave_direction: NullableNumber;
+    wave_period: NullableNumber;
+    wind_wave_height: NullableNumber;
+    wind_wave_direction: NullableNumber;
+    wind_wave_period: NullableNumber;
+    swell_wave_height: NullableNumber;
+    swell_wave_direction: NullableNumber;
+    swell_wave_period: NullableNumber;
   };
   hourly?: {
     time: string[];
-    wave_height: number[];
-    wave_direction: number[];
-    wave_period: number[];
+    wave_height: NullableNumber[];
+    wave_direction: NullableNumber[];
+    wave_period: NullableNumber[];
   };
 }
 
@@ -85,24 +86,24 @@ export interface AirQualityData {
   elevation: number;
   current: {
     time: string;
-    european_aqi: number;
-    european_aqi_pm2_5: number;
-    european_aqi_pm10: number;
-    european_aqi_no2: number;
-    european_aqi_o3: number;
-    european_aqi_so2: number;
-    us_aqi: number;
-    us_aqi_pm2_5: number;
-    us_aqi_pm10: number;
-    us_aqi_no2: number;
-    us_aqi_o3: number;
-    us_aqi_so2: number;
-    us_aqi_co: number;
+    european_aqi: NullableNumber;
+    european_aqi_pm2_5: NullableNumber;
+    european_aqi_pm10: NullableNumber;
+    european_aqi_no2: NullableNumber;
+    european_aqi_o3: NullableNumber;
+    european_aqi_so2: NullableNumber;
+    us_aqi: NullableNumber;
+    us_aqi_pm2_5: NullableNumber;
+    us_aqi_pm10: NullableNumber;
+    us_aqi_no2: NullableNumber;
+    us_aqi_o3: NullableNumber;
+    us_aqi_so2: NullableNumber;
+    us_aqi_co: NullableNumber;
   };
   hourly?: {
     time: string[];
-    european_aqi: number[];
-    us_aqi: number[];
+    european_aqi: NullableNumber[];
+    us_aqi: NullableNumber[];
   };
 }
 
@@ -138,23 +139,23 @@ export interface SatelliteRadiationData {
   elevation: number;
   current: {
     time: string;
-    uv_index: number;
-    uv_index_clear_sky: number;
-    direct_normal_irradiance: number;
-    diffuse_radiation: number;
-    terrestrial_radiation: number;
-    terrestrial_radiation_instant: number;
-    shortwave_radiation: number;
-    shortwave_radiation_instant: number;
-    global_tilted_irradiance: number;
-    global_tilted_irradiance_instant: number;
+    uv_index: NullableNumber;
+    uv_index_clear_sky: NullableNumber;
+    direct_normal_irradiance: NullableNumber;
+    diffuse_radiation: NullableNumber;
+    terrestrial_radiation: NullableNumber;
+    terrestrial_radiation_instant: NullableNumber;
+    shortwave_radiation: NullableNumber;
+    shortwave_radiation_instant: NullableNumber;
+    global_tilted_irradiance: NullableNumber;
+    global_tilted_irradiance_instant: NullableNumber;
   };
   hourly?: {
     time: string[];
-    uv_index: number[];
-    uv_index_clear_sky: number[];
-    direct_normal_irradiance: number[];
-    diffuse_radiation: number[];
+    uv_index: NullableNumber[];
+    uv_index_clear_sky: NullableNumber[];
+    direct_normal_irradiance: NullableNumber[];
+    diffuse_radiation: NullableNumber[];
   };
 }
 
@@ -245,4 +246,4 @@ export interface ComprehensiveWeatherData {
   radiation: SatelliteRadiationData | null;
   loading: boolean;
   error: string | null;
-} 
+}

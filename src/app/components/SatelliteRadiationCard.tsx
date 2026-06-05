@@ -7,6 +7,34 @@ interface SatelliteRadiationCardProps {
   loading: boolean;
 }
 
+const isFiniteNumber = (value: number | null | undefined): value is number =>
+  typeof value === 'number' && Number.isFinite(value);
+
+const getUVIndexCategory = (uvIndex: number | null | undefined) => {
+  if (!isFiniteNumber(uvIndex)) {
+    return {
+      level: 'Unavailable',
+      color: 'text-gray-400',
+      bgColor: 'bg-gray-500/20',
+      advice: 'UV data unavailable',
+    };
+  }
+  if (uvIndex <= 2) return { level: 'Low', color: 'text-green-400', bgColor: 'bg-green-500/20', advice: 'No protection required' };
+  if (uvIndex <= 5) return { level: 'Moderate', color: 'text-yellow-400', bgColor: 'bg-yellow-500/20', advice: 'Take precautions' };
+  if (uvIndex <= 7) return { level: 'High', color: 'text-orange-400', bgColor: 'bg-orange-500/20', advice: 'Protection required' };
+  if (uvIndex <= 10) return { level: 'Very High', color: 'text-red-400', bgColor: 'bg-red-500/20', advice: 'Extra protection needed' };
+  return { level: 'Extreme', color: 'text-purple-400', bgColor: 'bg-purple-500/20', advice: 'Avoid sun exposure' };
+};
+
+const formatNumber = (value: number | null | undefined, digits = 1) =>
+  isFiniteNumber(value) ? value.toFixed(digits) : 'N/A';
+
+const formatRadiation = (value: number | null | undefined) => {
+  if (!isFiniteNumber(value)) return 'N/A';
+  if (value >= 1000) return `${(value / 1000).toFixed(1)} kW/m2`;
+  return `${value.toFixed(0)} W/m2`;
+};
+
 const SatelliteRadiationCard: React.FC<SatelliteRadiationCardProps> = ({ radiationData, loading }) => {
   if (loading) {
     return (
@@ -24,7 +52,7 @@ const SatelliteRadiationCard: React.FC<SatelliteRadiationCardProps> = ({ radiati
     );
   }
 
-  if (!radiationData) {
+  if (!radiationData || !radiationData.current) {
     return (
       <div className="glass-container p-4 rounded-xl">
         <div className="flex items-center space-x-2 mb-3">
@@ -37,21 +65,9 @@ const SatelliteRadiationCard: React.FC<SatelliteRadiationCardProps> = ({ radiati
   }
 
   const { current } = radiationData;
-
-  const getUVIndexCategory = (uvIndex: number) => {
-    if (uvIndex <= 2) return { level: 'Low', color: 'text-green-400', bgColor: 'bg-green-500/20', advice: 'No protection required' };
-    if (uvIndex <= 5) return { level: 'Moderate', color: 'text-yellow-400', bgColor: 'bg-yellow-500/20', advice: 'Take precautions' };
-    if (uvIndex <= 7) return { level: 'High', color: 'text-orange-400', bgColor: 'bg-orange-500/20', advice: 'Protection required' };
-    if (uvIndex <= 10) return { level: 'Very High', color: 'text-red-400', bgColor: 'bg-red-500/20', advice: 'Extra protection needed' };
-    return { level: 'Extreme', color: 'text-purple-400', bgColor: 'bg-purple-500/20', advice: 'Avoid sun exposure' };
-  };
-
   const uvInfo = getUVIndexCategory(current.uv_index);
-
-  const formatRadiation = (value: number) => {
-    if (value >= 1000) return `${(value / 1000).toFixed(1)} kW/m²`;
-    return `${value.toFixed(0)} W/m²`;
-  };
+  const uvIndex = isFiniteNumber(current.uv_index) ? current.uv_index : null;
+  const hasUv = uvIndex !== null;
 
   return (
     <div className="glass-container p-4 rounded-xl">
@@ -59,14 +75,13 @@ const SatelliteRadiationCard: React.FC<SatelliteRadiationCardProps> = ({ radiati
         <FaSun className="text-yellow-400 text-glow" />
         <h3 className="text-white font-semibold">Solar Radiation</h3>
       </div>
-      
+
       <div className="space-y-3">
-        {/* UV Index */}
         <div className={`p-3 rounded-lg ${uvInfo.bgColor}`}>
           <div className="flex items-center justify-between mb-2">
             <span className="text-gray-300 text-sm">UV Index</span>
             <div className={`font-bold text-lg ${uvInfo.color}`}>
-              {current.uv_index.toFixed(1)}
+              {formatNumber(current.uv_index)}
             </div>
           </div>
           <div className={`text-xs ${uvInfo.color}`}>
@@ -74,9 +89,8 @@ const SatelliteRadiationCard: React.FC<SatelliteRadiationCardProps> = ({ radiati
           </div>
         </div>
 
-        {/* UV Protection Advice */}
         <div className="flex items-center space-x-2 p-2 bg-gray-800/50 rounded-lg">
-          {current.uv_index <= 5 ? (
+          {hasUv && uvIndex <= 5 ? (
             <FaShieldAlt className="text-green-400" />
           ) : (
             <FaExclamationTriangle className="text-orange-400" />
@@ -91,7 +105,6 @@ const SatelliteRadiationCard: React.FC<SatelliteRadiationCardProps> = ({ radiati
           </div>
         </div>
 
-        {/* Solar Radiation Values */}
         <div className="pt-2 border-t border-gray-600">
           <div className="text-gray-300 text-sm mb-2">Solar Radiation</div>
           <div className="grid grid-cols-1 gap-2 text-xs">
@@ -114,28 +127,29 @@ const SatelliteRadiationCard: React.FC<SatelliteRadiationCardProps> = ({ radiati
           </div>
         </div>
 
-        {/* Protection Tips */}
         <div className="pt-2 border-t border-gray-600">
           <div className="flex items-center space-x-2 mb-2">
             <FaShieldAlt className="text-blue-400" />
             <span className="text-gray-300 text-sm">Protection Tips</span>
           </div>
           <div className="text-xs text-gray-400 space-y-1">
-            {current.uv_index > 3 && (
+            {hasUv && uvIndex > 3 && (
               <>
-                <div>• Use sunscreen (SPF 30+)</div>
-                <div>• Wear protective clothing</div>
-                <div>• Seek shade during peak hours</div>
-                <div>• Wear UV-blocking sunglasses</div>
+                <div>Use sunscreen (SPF 30+)</div>
+                <div>Wear protective clothing</div>
+                <div>Seek shade during peak hours</div>
+                <div>Wear UV-blocking sunglasses</div>
               </>
             )}
-            {current.uv_index <= 3 && (
+            {hasUv && uvIndex <= 3 && (
               <div>UV levels are low. Normal outdoor activities are safe.</div>
+            )}
+            {!hasUv && (
+              <div>UV guidance is unavailable for this location.</div>
             )}
           </div>
         </div>
 
-        {/* UV Scale */}
         <div className="pt-2 border-t border-gray-600">
           <div className="text-gray-300 text-sm mb-2">UV Index Scale</div>
           <div className="flex space-x-1">
